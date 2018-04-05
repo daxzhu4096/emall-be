@@ -6,7 +6,7 @@
  * @Last modified by:   GengPeng Zhu
  * @Last modified time: 2018-04-01T19:11:18+08:00
  */
- const mongo = require('./mongoControl');
- module.exports = async (ctx,next) => {
-
- }
+const mongoose = require('../mongoose')
+module.exports = async (ctx, next) => {
+  
+}

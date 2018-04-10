@@ -4,13 +4,16 @@
  * @Email:  daxzhu@126.com
  * @Filename: user.model.js
  * @Last modified by:   GengPeng Zhu
- * @Last modified time: 2018-04-04T17:26:06+08:00
+ * @Last modified time: 2018-04-10T16:24:43+08:00
  */
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const users = new mongoose.Schema({
   username: {
     type: String,
-    unique: [true,"用户名已存在"],
+    unique: [
+      true, "用户名已存在"
+    ],
     required: true
   },
   password: {
@@ -37,4 +40,22 @@ const users = new mongoose.Schema({
   createTime: Date,
   lastLogin: Date
 })
-module.exports = mongoose.model("Users",users)
+users.pre('save', next => {
+  const user = this;
+  const SALT_FACTOR = 10;
+  bcrypt.hash(user.password, SALT_FACTOR).then(hash => {
+    user.password = hash;
+    next()
+  }).catch(err => {
+    next(err)
+  });
+});
+UserSchema.methods.comparePassword = function(password, cb) {
+  // 对比
+  bcrypt.compare(password, this.password).then(res => {
+    cb(res)
+  }).catch(err => {
+    throw err
+  })
+}
+module.exports = mongoose.model("Users", users)

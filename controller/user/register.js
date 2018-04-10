@@ -4,7 +4,7 @@
  * @Email:  daxzhu@126.com
  * @Filename: register.js
  * @Last modified by:   GengPeng Zhu
- * @Last modified time: 2018-04-04T19:17:12+08:00
+ * @Last modified time: 2018-04-10T16:37:24+08:00
  */
 const mongoose = require('../mongoose')
 module.exports = async (ctx, next) => {
@@ -17,7 +17,7 @@ module.exports = async (ctx, next) => {
     email
   } = ctx.request.body;
 
-  await mongoose.User.create({
+  const User = new mongoose.User({
     username,
     password,
     question,
@@ -25,23 +25,16 @@ module.exports = async (ctx, next) => {
     phone,
     email,
     createTime: Date.parse(new Date())
-  }).then(() => {
+  })
+  User.save().then(() => {
     ctx.body = {
       status: 0,
       msg: '注册成功'
     }
   }).catch((err) => {
-    if (err.code === 11000) {
-      ctx.body = {
-        status: 1,
-        msg: "用户名已存在",
-        err: err
-      }
-    } else {
-      ctx.body = {
-        status: 1,
-        msg: err
-      }
+    ctx.body = {
+      status: 1,
+      msg: "注册失败"
     }
   })
 }

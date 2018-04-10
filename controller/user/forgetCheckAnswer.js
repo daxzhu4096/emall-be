@@ -4,9 +4,10 @@
  * @Email:  daxzhu@126.com
  * @Filename: forgetCheckAnswer.js
  * @Last modified by:   GengPeng Zhu
- * @Last modified time: 2018-04-04T20:12:08+08:00
+ * @Last modified time: 2018-04-10T16:45:49+08:00
  */
  const mongoose = require('../mongoose')
+ const bcrypt = require('bcrypt');
  module.exports = async (ctx, next) => {
    const {username,question,answer} = ctx.request.body;
 
@@ -14,7 +15,7 @@
      if (result.answer === answer) {
        ctx.body = {
          status: 0,
-         data: '' //token
+         data: bcrypt.hash(result._id,10).then(hash=>hash).catch(err=>err)
        }
      } else {
        ctx.body = {

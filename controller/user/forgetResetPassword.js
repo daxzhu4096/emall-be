@@ -18,7 +18,7 @@
        }
      }).catch(err=>{
        ctx.body ={
-         status= 1,
+         status: 1,
          msg: "修改密码失败"
        }
      })

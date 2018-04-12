@@ -25,8 +25,8 @@ module.exports = async (ctx, next) => {
     phone,
     email,
     createTime: Date.parse(new Date())
-  })
-  mongoose.User.findOne({username}).then(result=>{
+  });
+  /* mongoose.User.findOne({username}).then(result=>{
     if(result){
       ctx.body = {
         status: 1,
@@ -46,6 +46,17 @@ module.exports = async (ctx, next) => {
       status: 1,
       msg: '注册失败',
       err: err
+    }
+  }) */
+  User.save().then(() => {
+    ctx.body = {
+      status: 0,
+      msg: '注册成功'
+    }
+  }).catch(err => {
+    ctx.body = {
+      status: 1,
+      msg: "用户名以被占用"
     }
   })
 }

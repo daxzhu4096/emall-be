@@ -40,7 +40,7 @@ const users = new mongoose.Schema({
   createTime: Date,
   lastLogin: Date
 })
-users.pre('save', next => {
+users.pre('save', function(next){
   const user = this;
   const SALT_FACTOR = 10;
   bcrypt.hash(user.password, SALT_FACTOR, function (err, hash) {

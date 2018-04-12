@@ -17,7 +17,7 @@ module.exports = async (ctx, next) => {
         msg: '该用户未注册'
       }
     } else {
-      mongoose.User.comparePassword(password, res => {
+      result.comparePassword(password, function(res) {
         if (res) {
           ctx.body = {
             status: 0,

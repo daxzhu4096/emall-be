@@ -43,19 +43,17 @@ const users = new mongoose.Schema({
 users.pre('save', next => {
   const user = this;
   const SALT_FACTOR = 10;
-  bcrypt.hash(user.password, SALT_FACTOR).then(hash => {
+  bcrypt.hash(user.password, SALT_FACTOR, function (err, hash) {
+    if (err) return next(err);
     user.password = hash;
     next()
-  }).catch(err => {
-    next(err)
   });
 });
-UserSchema.methods.comparePassword = function(password, cb) {
+users.methods.comparePassword = function (password, cb) {
   // 对比
-  bcrypt.compare(password, this.password).then(res => {
-    cb(res)
-  }).catch(err => {
-    throw err
+  bcrypt.compare(password, this.password,function(err,result){
+    if(err) throw err;
+    cb(null,result)
   })
 }
 module.exports = mongoose.model("Users", users)

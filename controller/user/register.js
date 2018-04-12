@@ -26,15 +26,26 @@ module.exports = async (ctx, next) => {
     email,
     createTime: Date.parse(new Date())
   })
-  User.save().then(() => {
-    ctx.body = {
-      status: 0,
-      msg: '注册成功'
+  mongoose.User.findOne({username}).then(result=>{
+    if(result){
+      ctx.body = {
+        status: 1,
+        msg: "用户名以被占用"
+      }
+    }else{
+      User.save(function(err){
+        if(err) throw err;
+        ctx.body = {
+          status: 0,
+          msg: '注册成功'
+        }
+      })
     }
-  }).catch((err) => {
+  }).catch(err=>{
     ctx.body = {
       status: 1,
-      msg: "注册失败"
+      msg: '注册失败',
+      err: err
     }
   })
 }

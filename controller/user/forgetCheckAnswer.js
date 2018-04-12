@@ -6,7 +6,7 @@
  * @Last modified by:   GengPeng Zhu
  * @Last modified time: 2018-04-10T16:45:49+08:00
  */
- const mongoose = require('../mongoose')
+ const mongoose = require('../mongoose');
  const bcrypt = require('bcrypt');
  module.exports = async (ctx, next) => {
    const {username,question,answer} = ctx.request.body;

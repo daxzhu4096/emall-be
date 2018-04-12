@@ -17,7 +17,7 @@ module.exports = async (ctx, next) => {
         msg: '该用户未注册'
       }
     } else {
-      result.comparePassword(password, function(res) {
+      result.comparePassword(password, function(err,res) {
         if (res) {
           ctx.body = {
             status: 0,

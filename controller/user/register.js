@@ -48,15 +48,17 @@ module.exports = async (ctx, next) => {
       err: err
     }
   }) */
-  User.save().then(() => {
-    ctx.body = {
-      status: 0,
-      msg: '注册成功'
+  User.save(function (err) {
+    if (err) {
+      ctx.body = {
+        status: 1,
+        msg: "用户名以被占用"
+      }
+    } else {
+      ctx.body = {
+        status: 0,
+        msg: '注册成功'
+      }
     }
-  }).catch(err => {
-    ctx.body = {
-      status: 1,
-      msg: "用户名以被占用"
-    }
-  })
+  });
 }
